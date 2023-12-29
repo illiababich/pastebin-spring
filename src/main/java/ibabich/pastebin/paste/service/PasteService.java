@@ -2,9 +2,10 @@ package ibabich.pastebin.paste.service;
 
 import ibabich.pastebin.hashgenerator.HashService;
 import ibabich.pastebin.paste.model.Paste;
+import ibabich.pastebin.paste.model.PasteDto;
 import ibabich.pastebin.paste.repository.PasteRepository;
-import ibabich.pastebin.user.User;
-import ibabich.pastebin.user.repository.UserRepository;
+import ibabich.pastebin.creator.model.Creator;
+import ibabich.pastebin.creator.repository.CreatorRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -12,6 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.HttpServerErrorException;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -19,16 +21,18 @@ import java.util.Optional;
 public class PasteService {
     private final PasteRepository pasteRepository;
     private final HashService hashService;
-    private final UserRepository userRepository;
+    private final CreatorRepository creatorRepository;
 
     @Transactional
-    public Paste createPaste(Paste request) {
+    public Paste createPaste(PasteDto request) {
         Paste newPaste = Paste.builder()
                 .content(request.getContent())
                 .expiresAt(request.getExpiresAt())
                 .createdAt(LocalDateTime.now())
                 .accessLevel(request.getAccessLevel())
-//                .userId(request.getUserId()) // TODO: add user assignment
+                .creator(request.getCreatorId() != null
+                        ? creatorRepository.findById(request.getCreatorId()).orElse(null)
+                        : null)
                 .pasteTitle(request.getPasteTitle())
                 .password(request.getPassword())
                 .build();
@@ -36,18 +40,15 @@ public class PasteService {
         newPaste = pasteRepository.save(newPaste);
         hashService.assignHashToPaste(newPaste);
 
-        if (request.getUserId() != null) {
-            User user = userRepository.findById(request.getUserId().getId())
-                    .orElseThrow(() -> new HttpServerErrorException(HttpStatus.NOT_FOUND));
-            newPaste.setUserId(user);
-            pasteRepository.save(newPaste);
-        }
-
         return pasteRepository.save(newPaste);
     }
 
-    public Optional<Paste> getPasteById(String pasteId) {
-        return Optional.ofNullable(pasteRepository.findById(pasteId)).orElseThrow(
+    public Optional<Paste> getPasteByHash(String hash) {
+        return Optional.ofNullable(pasteRepository.findByHash(hash)).orElseThrow(
                 () -> new HttpServerErrorException(HttpStatus.NOT_FOUND));
+    }
+
+    public List<Paste> getPastesByUserId(Long userId) {
+        return pasteRepository.findByCreator_Id(userId);
     }
 }

@@ -1,4 +1,4 @@
-package ibabich.pastebin.user;
+package ibabich.pastebin.creator.model;
 
 import ibabich.pastebin.paste.model.Paste;
 import jakarta.persistence.*;
@@ -9,19 +9,19 @@ import java.util.List;
 
 @Entity
 @Getter
-@Table(name = "application_user")
+@Table(name = "creator")
 @NoArgsConstructor
-public class User {
+public class Creator {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String username;
     private String passwordHash;
 
-    @OneToMany(mappedBy = "userId")
+    @OneToMany(mappedBy = "creator")
     private List<Paste> pasteList;
 
-    public User(String username, String passwordHash) {
+    public Creator(String username, String passwordHash) {
         this.username = username;
         this.passwordHash = passwordHash;
     }

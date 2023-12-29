@@ -20,7 +20,7 @@ public class HashService {
     private static final int MAX_RETRIES = 10;
 
     // Method to generate a specified number of hashes
-    @Scheduled(fixedDelay = 5000) // 5 seconds
+    @Scheduled(fixedDelay = 5000)
     public void generateHashes() {
         long existingHashes = hashRepository.countByPasteIsNull();
         int hashesToGenerate = 10 - (int)existingHashes;

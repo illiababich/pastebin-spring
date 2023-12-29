@@ -9,7 +9,6 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.time.LocalDateTime;
 
-
 // example: sdfD9Oi43n
 // (26 * 2) + 10 = 839.299.365.868.340.200 unique hashes
 // TODO: add logging in case of a collision
@@ -24,7 +23,7 @@ public class HashGenerator {
         String generatedHash;
 
         do {
-            generatedHash = generateHash(); // Your existing method to generate a hash
+            generatedHash = generateHash();
             System.out.println("HASH: " + generatedHash);
         } while (pasteRepository.findByHash(generatedHash).isPresent()); // Check uniqueness
         hash.setHash(generatedHash);

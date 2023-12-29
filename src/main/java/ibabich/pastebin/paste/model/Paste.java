@@ -2,7 +2,7 @@ package ibabich.pastebin.paste.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import ibabich.pastebin.hashgenerator.Hash;
-import ibabich.pastebin.user.User;
+import ibabich.pastebin.creator.model.Creator;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -28,9 +28,9 @@ public class Paste {
     private Hash hash;
 
     @ManyToOne
-    @JoinColumn(name = "application_user_id")
+    @JoinColumn(name = "creator_id")
     @JsonIgnore
-    private User userId;
+    private Creator creator;
 
     private String pasteTitle;
     private String password;

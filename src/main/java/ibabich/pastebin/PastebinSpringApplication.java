@@ -1,7 +1,7 @@
 package ibabich.pastebin;
 
-import ibabich.pastebin.user.User;
-import ibabich.pastebin.user.repository.UserRepository;
+import ibabich.pastebin.creator.model.Creator;
+import ibabich.pastebin.creator.repository.CreatorRepository;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -17,11 +17,11 @@ public class PastebinSpringApplication {
     }
 
     @Bean
-    public CommandLineRunner dataLoader (UserRepository userRepository) {
+    public CommandLineRunner dataLoader (CreatorRepository creatorRepository) {
         return args -> {
-            User user1 = new User("qwe", "rty");
+            Creator creator1 = new Creator("username@gmail.com", "secure");
 
-            userRepository.save(user1);
+            creatorRepository.save(creator1);
         };
     }
 }
