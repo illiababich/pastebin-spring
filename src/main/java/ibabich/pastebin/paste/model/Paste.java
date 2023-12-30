@@ -19,7 +19,7 @@ public class Paste {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String content; // TODO: replace with a link to S3
-    private LocalDateTime createdAt; // TODO: add time zones
+    private String createdAtUtc;
     private ExpirationOptions expiresAt; // TODO: createdAt + ExpirationOption
     private AccessLevel accessLevel;
 

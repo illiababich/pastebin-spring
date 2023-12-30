@@ -25,9 +25,9 @@ public class PasteController {
         return ResponseEntity.of(pasteService.getPasteByHash(hash));
     }
 
-    @GetMapping("/user/{userId}")
-    public ResponseEntity<List<Paste>> getPastesByUserId(@PathVariable Long userId) {
-        List<Paste> pastes = pasteService.getPastesByUserId(userId);
+    @GetMapping("/creator/{creatorId}")
+    public ResponseEntity<List<Paste>> getPastesByCreatorId(@PathVariable Long creatorId) {
+        List<Paste> pastes = pasteService.getPastesByCreatorId(creatorId);
         return ResponseEntity.ok(pastes);
     }
 }
