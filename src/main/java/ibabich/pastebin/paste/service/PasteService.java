@@ -1,6 +1,6 @@
 package ibabich.pastebin.paste.service;
 
-import ibabich.pastebin.hashgenerator.HashService;
+import ibabich.pastebin.hashgenerator.service.HashService;
 import ibabich.pastebin.paste.model.Paste;
 import ibabich.pastebin.paste.model.PasteDto;
 import ibabich.pastebin.paste.repository.PasteRepository;

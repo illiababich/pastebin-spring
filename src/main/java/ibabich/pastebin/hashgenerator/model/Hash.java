@@ -1,4 +1,4 @@
-package ibabich.pastebin.hashgenerator;
+package ibabich.pastebin.hashgenerator.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import ibabich.pastebin.paste.model.Paste;

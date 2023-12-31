@@ -1,4 +1,4 @@
-package ibabich.pastebin.logging;
+package ibabich.pastebin.logging.service;
 
 import ibabich.pastebin.logging.model.ErrorLevel;
 import ibabich.pastebin.logging.model.LogEntry;
@@ -7,19 +7,23 @@ import lombok.AllArgsConstructor;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.TimeZone;
 
 @AllArgsConstructor
 @Service
 public class DatabaseLogger {
-
-    private final LogEntryRepository logEntryRepository;
-
-    public void createLog(ErrorLevel errorLevel, String message) {
+    @Async("asyncLogWriter")
+    public void createLog(ErrorLevel errorLevel, String message, LogEntryRepository logEntryRepository) {
         LogEntry logEntry = new LogEntry();
-        logEntry.setDateTime(String.valueOf(LocalDateTime.now()));
         logEntry.setErrorLevel(errorLevel);
         logEntry.setErrorMessage(message);
+
+        Date date = new Date();
+        SimpleDateFormat sdf = new SimpleDateFormat("dd MMM yyyy hh:mm:ss a");
+        sdf.setTimeZone(TimeZone.getTimeZone("UTC"));
+        logEntry.setDateTime(sdf.format(date));
 
         logEntryRepository.save(logEntry);
     }

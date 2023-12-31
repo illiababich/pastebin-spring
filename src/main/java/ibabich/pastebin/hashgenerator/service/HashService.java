@@ -1,5 +1,10 @@
-package ibabich.pastebin.hashgenerator;
+package ibabich.pastebin.hashgenerator.service;
 
+import ibabich.pastebin.hashgenerator.model.Hash;
+import ibabich.pastebin.hashgenerator.repository.HashRepository;
+import ibabich.pastebin.logging.service.DatabaseLogger;
+import ibabich.pastebin.logging.model.ErrorLevel;
+import ibabich.pastebin.logging.repository.LogEntryRepository;
 import ibabich.pastebin.paste.model.Paste;
 import ibabich.pastebin.paste.repository.PasteRepository;
 import lombok.AllArgsConstructor;
@@ -17,6 +22,7 @@ import java.util.stream.IntStream;
 public class HashService {
     private final HashRepository hashRepository;
     private final PasteRepository pasteRepository;
+    private final LogEntryRepository logEntryRepository;
     private static final int MAX_RETRIES = 10;
 
     // Method to generate a specified number of hashes
@@ -28,10 +34,10 @@ public class HashService {
         if (hashesToGenerate > 0) {
             List<Hash> newHashes = IntStream.range(0, hashesToGenerate).mapToObj(i -> {
                 try {
-                    return HashGenerator.generateUniqueHash(pasteRepository);
+                    HashGenerator generator = new HashGenerator(logEntryRepository);
+                    return generator.generateUniqueHash(pasteRepository);
                 } catch (NoSuchAlgorithmException e) {
                     throw new RuntimeException(e);
-                    // TODO: Handle this exception appropriately
                 }
             }).collect(Collectors.toList());
 
@@ -55,8 +61,11 @@ public class HashService {
             } else {
                 try {
                     Thread.sleep(1000);
-                    System.out.println("something is going wrong....");
-                    //TODO: add logging here
+                    DatabaseLogger databaseLogger = new DatabaseLogger();
+                    databaseLogger.createLog(
+                            ErrorLevel.HASH_TO_PASTE_ASSIGNMENT,
+                            "An error occurred while retrieving the pre-generated hash.",
+                            logEntryRepository);
                     assignHashToPaste(paste);
                 } catch (InterruptedException e) {
                     throw new RuntimeException(e);

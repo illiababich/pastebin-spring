@@ -1,5 +1,6 @@
-package ibabich.pastebin.hashgenerator;
+package ibabich.pastebin.hashgenerator.repository;
 
+import ibabich.pastebin.hashgenerator.model.Hash;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

@@ -1,12 +1,10 @@
 package ibabich.pastebin.paste.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import ibabich.pastebin.hashgenerator.Hash;
+import ibabich.pastebin.hashgenerator.model.Hash;
 import ibabich.pastebin.creator.model.Creator;
 import jakarta.persistence.*;
 import lombok.*;
-
-import java.time.LocalDateTime;
 
 @Entity
 @Getter
