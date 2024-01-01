@@ -13,4 +13,5 @@ public interface PasteRepository extends JpaRepository<Paste, String> {
     @Query("SELECT p FROM Paste p WHERE p.hash.hash = ?1")
     Optional<Paste> findByHash(String hashValue);
     List<Paste> findByCreator_Id(Long creatorId);
+    List<Paste> findByEnabledTrue();
 }

@@ -18,8 +18,9 @@ public class Paste {
     private Long id;
     private String content; // TODO: replace with a link to S3
     private String createdAtUtc;
-    private ExpirationOptions expiresAt; // TODO: createdAt + ExpirationOption
+    private String expiresAt;
     private AccessLevel accessLevel;
+    private boolean enabled;
 
     @OneToOne(optional = true)
     @JoinColumn(name = "hash_id")
