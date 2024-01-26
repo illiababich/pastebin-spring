@@ -1,0 +1,30 @@
+version: '3.1'
+
+services:
+  app:
+    image: 'imageName'
+    container_name: app
+    depends_on:
+      - db
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/pastebin
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: password
+    ports:
+      - '8080:8080'
+    expose:
+      - '8080'
+
+  db:
+    image: 'postgres'
+    container_name: db
+    restart: always
+    ports:
+      - '5432:5432'
+    expose:
+      - '5432'
+    environment:
+      TZ: UTC
+      POSTGRES_USERNAME: postgres
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: pastebin
